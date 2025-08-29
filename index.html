@@ -5,9 +5,7 @@
     <meta http-equiv="refresh" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="title"></title>
-    <link rel="shortcut icon" href="src/images/ico/favicon.ico" type="image/x-icon">
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/src/modules/modules.js"></script>
     <script>
         var socket = io();
         socket.on("conta",(data)=>{
@@ -89,32 +87,17 @@
                 "\x76\x61\x67\x61\x62\x75\x6e\x64\x61",//"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
                 "\x62\x61\x69\x74\x6f\x6c\x61","\x72\x61\x61\x72\x69\x67\x61"//,"","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""
             ];
-            for(let i = 0; i < termos.length; i++){
-                if(document.getElementById('omniwebtravel').value=""==termos[i]){
-                    document.getElementById('omniwebtravel').value="";
-                    document.getElementById("nickname").value="";
-                }
-            }
+            document.getElementById('omniwebtravel').value="";
+            document.getElementById("nickname").value="";
         }
     </script>
     <style>
         #conteudo{
-            position: absolute;
-            top: 11%;
-            left: 0px;
             width: 100%;
-            height: 80%;
         }
         #conteudo>iframe{
-            position: absolute;
-            top: 0px;
-            left: 0px;
             width: 100%;
-            min-height: fit-content;
-            height: 600px;
-            max-width: 100%;
-            overflow-y: scroll;
-            overflow-x: scroll;
+            height: 100%;
         }
         #header{
             position: absolute;
@@ -297,41 +280,46 @@
             <li>
                 <span>Arquivo</span>
                 <ul>
-                    <li class="hassub" id="mainSave" onmouseover="dialog('Salvar')" onmouseout="silenciar()">Salva</li>
-                    <li class="hassub" onmouseover="dialog('Imprimir')" onmouseout="silenciar()">Imprimir</li>
-                    <li class="hassub" onmouseover="dialog('Selecionar')" onmouseout="silenciar()">Selecionar</li>
-                    <li class="hassub"  onmouseover="dialog('Novo Documento de Texto')" onmouseout="silenciar()"></li>
-                    <li class="hassub"  onmouseover="dialog('Novo Documento de Planilha')" onmouseout="silenciar()"></li>
-                    <li class="hassub"  onmouseover="dialog('Novo Documento de Apresentação')" onmouseout="silenciar()"></li>
-                    <li class="hassub"  onmouseover="dialog('Novo Documento de Desenho')" onmouseout="silenciar()"></li>
-                    <li class="hassub"  onmouseover="dialog('Novo Documento de XML')" onmouseout="silenciar()"></li>
-                    <li class="hassub"  onmouseover="dialog('Recursos Avançados de Arquivo')" onmouseout="silenciar()"></li>
+                    <li id="hassub">salva</li>
+                    <li id="hassub">imprimir</li>
+                    <li id="hassub">selecionar</li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
                 </ul>
             </li>
             <li>
                 <span>Conteúdo</span>
                 <ul>
-                    <li class="hassub" onmouseover="dialog('Games')" onmouseout="silenciar()">Games</li>
-                    <li class="hassub" onmouseover="dialog('eiva')" onmouseout="silenciar()">AIVA</li>
-                    <li class="hassub" onmouseover="dialog('Banco de questões')" onmouseout="silenciar()">Questões</li>
-                    <li class="hassub" onmouseover="dialog('Livros de Romance')" onmouseout="silenciar()">Romance</li>
-                    <li class="hassub" onmouseover="dialog('Livros de Pesquisa')" onmouseout="silenciar()">Pesquisa</li>
-                    <li class="hassub" onmouseover="dialog('Livros de Aventura')" onmouseout="silenciar()">Aventura</li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
                 </ul>
             </li>
             <li>
-                <span onmouseover="dialog('sobre nós')" onmouseout="silenciar()">Sobre Nós</span>
+                <span>Sobre Nós</span>
                 <ul>
-                    <li class="hassub"  onmouseover="dialog('Ravel')" onmouseout="silenciar()">Ravel</li>
-                    <li class="hassub"  onmouseover="dialog('Tainara')" onmouseout="silenciar()">Tainara</li>
-                    <li class="hassub"  onmouseover="dialog('Regina')" onmouseout="silenciar()">Regina</li>
-                    <li class="hassub"  onmouseover="dialog('Cleidiane')" onmouseout="silenciar()">Cleidiane</li>
-                    <li class="hassub"  onmouseover="dialog('Kelly')" onmouseout="silenciar()">Kelly</li>
-                    <li class="hassub"  onmouseover="dialog('Rivanda')" onmouseout="silenciar()">Rivanda</li>
-                    <li class="hassub"  onmouseover="dialog('Soraima')" onmouseout="silenciar()">Soraima</li>
-                    <li class="hassub"  onmouseover="dialog('Maria Maquena')" onmouseout="silenciar()">Maria Maquena</li>
-                    <li class="hassub"  onmouseover="dialog('Kauanny')" onmouseout="silenciar()">Kauanny</li>
-                    <li class="hassub"  onmouseover="dialog('SIC Tecnico')" onmouseout="silenciar()">SIC Tecnico</li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
                 </ul>
             </li>
             <li>
@@ -352,22 +340,7 @@
         </ul>
     </section>
     <section id="footer"></section>
-    <section id="leftbar">
-        <ul style="color: aliceblue; text-decoration: none;">
-            <li>
-                <span onmouseover="dialog('Estatuto do funcionalismo público municipal')" onmouseout="silenciar()"><a href="./src/documents/html/lei-itapipoca-.html" target="alvo" style="color: inherit; text-decoration: inherit;">Estatuto do funcionalismo público municipal</a></span>
-            </li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-        </ul>
-    </section>
+    <section id="leftbar"></section>
     <section id="rightbar">
         <div id="webtravel">
             <table>
@@ -402,18 +375,10 @@
                             <div id="webtraveltab7" status="" title="tab7-" class="tab" onclick=""></div>
                             <div id="webtraveltab8" status="" title="tab8-" class="tab" onclick=""></div>
                             <div id="webtraveltab9" status="" title="tab9-" class="tab" onclick=""></div>
-                            <select id="">
-                                <option enginer="https://www.google.com/search?q=" value="">Google</option>
-                                <option enginer="https://www.bing.com/search?q=" value="">Bing</option>
-                                <option enginer="https://duckduckgo.com/?t=h_&q=" value="">DuckDuckGo</option>
-                                <option enginer="https://yandex.com/search?text=" value="">Yandex</option>
-                            </select>
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            <iframe src="" name="webtravelcontent" id="webtravelcontent"></iframe>
-                        </td>
+                        <iframe src="" name="webtravelcontent" id="webtravelcontent"></iframe>
                     </tr>
                 </tbody>
             </table>
@@ -484,7 +449,4 @@
         <div id="statusConnection"></div>
     </section>
 </body>
-<script>
-    document.getElementById('mainSave').click();
-</script>
 </html>
