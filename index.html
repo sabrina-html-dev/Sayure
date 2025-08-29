@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html id="html" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="title"></title>
+    <link rel="shortcut icon" href="src/images/ico/favicon.ico" type="image/x-icon">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/src/modules/modules.js"></script>
+    <script>
+        var socket = io();
+        socket.on("conta",(data)=>{
+            console.log(data);
+        });
+        setInterval(()=>{
+            var d= new Date()
+            document.getElementById("title").innerHTML=d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+        },1000);
+        function calendar(){
+            var seila = setTimeout(()=>{
+                var date = new Date();
+                var weekday = date.getDay();// dia da semana
+                var daySpaces = 35;
+                var dayofmounth = date.getDate();
+                const days = [
+                    ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
+                    ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
+                    ["Вс","Пн","Вт","Ср","Чт","Пт","Сб"],
+                    ["dom","seg","ter","qua","qui","sex","sab"],
+                ];
+                const months = [
+                    ["January","February","March","April","May","June","July","August","September","October","November","December"],
+                    ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
+                    ["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь "],
+                    ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"]
+                ];
+                var lang = document.body.getAttribute("lang");
+                switch(lang) {
+                    case "ru": 
+                        for(let i = 0; i < days[0][0].length; i++){
+                            document.getElementById("calendarDay"+i).innerHTML = days[2][date.getDay()];
+                        };
+                    break;
+                    case "en": 
+                        for(let i = 0; i < days[0][0].length; i++){
+                            document.getElementById("calendarDay"+i).innerHTML = days[0][date.getDay()];
+                        };
+                    break;
+                    case "de": 
+                        for(let i = 0; i < days[0][0].length; i++){
+                            document.getElementById("calendarDay"+i).innerHTML = days[1][date.getDay()];
+                        };
+                    break;
+                    case "pt-BR": 
+                        for(let i = 0; i < days[0][0].length; i++){
+                            document.getElementById("calendarDay"+i).innerHTML = days[3][date.getDay()];
+                        };
+                    break;
+                    default:
+                }
+                switch(lang) {
+                    case "en":
+                        var month = months[0][date.getMonth()];
+                        document.getElementById("show_year").innerHTML = month + " - " + date.getFullYear(); break;
+                    case "pt-BR":
+                        var month = months[3][date.getMonth()];
+                        document.getElementById("show_year").innerHTML = month + " - " + date.getFullYear(); break;
+                    case "ru":
+                        var month = months[2][date.getMonth()];
+                        document.getElementById("show_year").innerHTML = month + " - " + date.getFullYear(); break;
+                    case "de":
+                        var month = months[1][date.getMonth()];
+                        document.getElementById("show_year").innerHTML = month + " - " + date.getFullYear(); break;
+                }
+            },2000);
+        }
+        function censurar(){
+            var termos = [
+                "\x76\x69\x61\x64\x6f","\x6d\x65\x75\x20\x70\x61\x75","\x6d\x65\x75\x20\x7a\x6f\x76\x6f","\x70\x72\x69\x71\x75\x69\x74\x6f","\x70\x72\x69\x6b\x69\x74\x6f",
+                "\x78\x65\x72\x65\x63\x61","\x70\x65\x70\x65\x63\x61","\x65\x73\x63\x72\x61\x76\x6f","\x65\x73\x63\x72\x61\x76\x61","\x71\x75\x65\x6e\x67\x61",
+                "\x72\x61\x6d\x65\x69\x72\x61","\x70\x69\x63\x61","\x20\x63\x75\x20","\x70\x6f\x72\x72\x61","\x70\x71\x70","\x70\x75\x74\x61\x20\x71\x75\x65\x20\x70\x61\x72\x69\x75",
+                "\x74\x6f\x6d\x61\x72\x20\x6e\x6f\x20\x63\x75","\x74\x65\x75\x20\x63\x75","\x66\x69\x6c\x68\x61\x20\x64\x61\x20\x70\x75\x74\x61","\x61\x72\x72\x6f\x6d\x62\x61\x64\x6f",
+                "\x61\x72\x72\x6f\x6d\x62\x61\x64\x61","\x63\x75\x7aã\x6f","\x62\x61\x69\x74\x69\x6e\x67\x61","\x70\x75\x74\x61","\x72\x61\x62\x6f",//"","","",
+                "\x66\x64\x70",//"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
+                "\x76\x61\x69\x20\x74\x75\x6d\x61\x20\x6e\x6f\x20\x63\x75",//"","","","","","","","","","","","","","","","","","","","","","","","","",
+                "\x66\x69\x6c\x68\x6f\x20\x64\x65\x20\x70\x75\x74\x61",//"","","","","","","","","","","","","","","","","","","","","","","","",
+                "\x62\x75\x63\x65\x74\x61","\x76\x61\x69\x20\x74\x6f\x6d\x61\x72\x20\x6e\x6f\x20\x63\x75",//"","","","","","","","","","","","","","","","","","","","","","","","","","","",
+                "\x76\x61\x67\x61\x62\x75\x6e\x64\x61",//"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
+                "\x62\x61\x69\x74\x6f\x6c\x61","\x72\x61\x61\x72\x69\x67\x61"//,"","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""
+            ];
+            for(let i = 0; i < termos.length; i++){
+                if(document.getElementById('omniwebtravel').value=""==termos[i]){
+                    document.getElementById('omniwebtravel').value="";
+                    document.getElementById("nickname").value="";
+                }
+            }
+        }
+    </script>
+    <style>
+        #conteudo{
+            position: absolute;
+            top: 11%;
+            left: 0px;
+            width: 100%;
+            height: 80%;
+        }
+        #conteudo>iframe{
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            min-height: fit-content;
+            height: 600px;
+            max-width: 100%;
+            overflow-y: scroll;
+            overflow-x: scroll;
+        }
+        #header{
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 10%;
+            background-color: blue;
+        }
+        #menu{
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-content: space-between;
+            justify-content: space-between;
+            align-items: stretch;
+        }
+        #menu>li{
+            list-style: none;
+        }
+        #menu>li>span{
+            text-decoration: none;
+            color: antiquewhite;
+        }
+        #menu>li>ul{
+            display: none;
+            transition: 5s;
+        }
+        #menu>li:hover >ul{
+            display: block;
+            transition: 5s;
+        }
+        #footer{
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            width: 100%;
+            height: 10%;
+            background-color: blue;
+        }
+        #leftbar{
+            position: absolute;
+            top: 10%;
+            left: 1px;
+            width: 1%;
+            height: 80%;
+            overflow-y: scroll;
+            background-color: blue;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+            border-style: outset;
+            border-color: indigo;
+            transition: 5s;
+        }
+        #leftbar:hover{
+            width: 30%;
+            transition: 5s;
+        }
+        #rightbar{
+            position: absolute;
+            top: 10%;
+            right: 1px;
+            width: 1%;
+            height: 80%;
+            overflow-y: scroll;
+            background-color: blue;
+            direction: rtl;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            border-style: outset;
+            border-color: indigo;
+            transition: 5s;
+        }
+        #rightbar:hover{
+            width: 30%;
+            transition: 5s;
+        }
+        #webtravel{
+            width: 100%;
+            direction: ltr;
+        }
+        #webtravel>div>table{
+            width: 100%;
+        }
+        #webtravel>table{
+            width: 100%;
+        }
+        #webtravel>table>tbody{
+            width: 100%;
+        }
+        #webtravel>table>tbody>tr{
+            width: 100%;
+        }
+        #webtravel>table>tbody>tr>td{
+            width: 100%;
+        }
+        #webtravel>table>tbody>tr>td>form{
+            width: 100%;
+        }
+        #webtravel>table>tbody>tr>td>form>input[type="text" i]{
+            width: 85%;
+        }
+        #webtravel>table>tbody>tr>td>form>input[type="submit" i]{
+            width: 10%;
+        }
+        #webtraveltabs{
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            overflow-x: scroll;
+        }
+        #webtraveltabs>.tab{
+            width: 25px;
+            height: 12px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8),rgba(0,0,0,0.5));
+            border-bottom-style: outset;
+            border-left-style: none;
+            border-right-style: none;
+            border-top-style: none;
+            transition: 1s;
+        }
+        #webtraveltabs>.tab:hover{
+            background: linear-gradient(to bottom, rgba(0,0,250,0.8),rgba(0,0,250,0.4));
+            border-color: aqua;
+            transition: 1s;
+        }
+        #webtravelcontent{
+            width: 100%;
+            height: 300px;
+            background-color: white;
+            overflow: scroll;
+        }
+        #calendar{
+            width: 100%;
+            height: 300px;
+            direction: ltr;
+        }
+        #calendar>table{
+            width: 100%;
+        }
+        #calendar>table>tbody>tr{
+            width: 100%;
+        }
+        #calendar>table{
+            width: 100%;
+        }
+        #statusConnection{
+            width: 100%;
+            height: 300px;
+        }
+        /*#webtravel*/
+        /*#webtravel*/
+        /* width */
+        ::-webkit-scrollbar {
+            width: 20px;
+        }
+        /* Track */
+        ::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 5px grey; 
+            border-radius: 10px;
+        }
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: rgba(2, 188, 245, 0.8);
+            border-radius: 10px;
+        }
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to left, rgba(58,68,225,0.8), rgba(58,68,225,0.8), rgba(58,68,225,0.8),);
+        }
+    </style>
+</head>
+<body lang="en">
+    <section id="conteudo">
+        <iframe id="mainContent" src="/src/documents/html/audioLib.html" frameborder="0"></iframe>
+    </section>
+    <section id="header">
+        <ul id="menu">
+            <li>
+                <span>Arquivo</span>
+                <ul>
+                    <li class="hassub" id="mainSave" onmouseover="dialog('Salvar')" onmouseout="silenciar()">Salva</li>
+                    <li class="hassub" onmouseover="dialog('Imprimir')" onmouseout="silenciar()">Imprimir</li>
+                    <li class="hassub" onmouseover="dialog('Selecionar')" onmouseout="silenciar()">Selecionar</li>
+                    <li class="hassub"  onmouseover="dialog('Novo Documento de Texto')" onmouseout="silenciar()"></li>
+                    <li class="hassub"  onmouseover="dialog('Novo Documento de Planilha')" onmouseout="silenciar()"></li>
+                    <li class="hassub"  onmouseover="dialog('Novo Documento de Apresentação')" onmouseout="silenciar()"></li>
+                    <li class="hassub"  onmouseover="dialog('Novo Documento de Desenho')" onmouseout="silenciar()"></li>
+                    <li class="hassub"  onmouseover="dialog('Novo Documento de XML')" onmouseout="silenciar()"></li>
+                    <li class="hassub"  onmouseover="dialog('Recursos Avançados de Arquivo')" onmouseout="silenciar()"></li>
+                </ul>
+            </li>
+            <li>
+                <span>Conteúdo</span>
+                <ul>
+                    <li class="hassub" onmouseover="dialog('Games')" onmouseout="silenciar()">Games</li>
+                    <li class="hassub" onmouseover="dialog('eiva')" onmouseout="silenciar()">AIVA</li>
+                    <li class="hassub" onmouseover="dialog('Banco de questões')" onmouseout="silenciar()">Questões</li>
+                    <li class="hassub" onmouseover="dialog('Livros de Romance')" onmouseout="silenciar()">Romance</li>
+                    <li class="hassub" onmouseover="dialog('Livros de Pesquisa')" onmouseout="silenciar()">Pesquisa</li>
+                    <li class="hassub" onmouseover="dialog('Livros de Aventura')" onmouseout="silenciar()">Aventura</li>
+                </ul>
+            </li>
+            <li>
+                <span onmouseover="dialog('sobre nós')" onmouseout="silenciar()">Sobre Nós</span>
+                <ul>
+                    <li class="hassub"  onmouseover="dialog('Ravel')" onmouseout="silenciar()">Ravel</li>
+                    <li class="hassub"  onmouseover="dialog('Tainara')" onmouseout="silenciar()">Tainara</li>
+                    <li class="hassub"  onmouseover="dialog('Regina')" onmouseout="silenciar()">Regina</li>
+                    <li class="hassub"  onmouseover="dialog('Cleidiane')" onmouseout="silenciar()">Cleidiane</li>
+                    <li class="hassub"  onmouseover="dialog('Kelly')" onmouseout="silenciar()">Kelly</li>
+                    <li class="hassub"  onmouseover="dialog('Rivanda')" onmouseout="silenciar()">Rivanda</li>
+                    <li class="hassub"  onmouseover="dialog('Soraima')" onmouseout="silenciar()">Soraima</li>
+                    <li class="hassub"  onmouseover="dialog('Maria Maquena')" onmouseout="silenciar()">Maria Maquena</li>
+                    <li class="hassub"  onmouseover="dialog('Kauanny')" onmouseout="silenciar()">Kauanny</li>
+                    <li class="hassub"  onmouseover="dialog('SIC Tecnico')" onmouseout="silenciar()">SIC Tecnico</li>
+                </ul>
+            </li>
+            <li>
+                <span>Administrativo</span>
+                <ul>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                    <li id="hassub"></li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+    <section id="footer"></section>
+    <section id="leftbar">
+        <ul style="color: aliceblue; text-decoration: none;">
+            <li>
+                <span onmouseover="dialog('Estatuto do funcionalismo público municipal')" onmouseout="silenciar()"><a href="./src/documents/html/lei-itapipoca-.html" target="alvo" style="color: inherit; text-decoration: inherit;">Estatuto do funcionalismo público municipal</a></span>
+            </li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </section>
+    <section id="rightbar">
+        <div id="webtravel">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <form id="webtravelform" action="" method="GET" target="webtravelcontent">
+                                <input
+                                type="text"
+                                id="omniwebtravel"
+                                title="digite aqui sua pesquisa, site ..."
+                                placeholder="digite aqui sua pesquisa, site ..."
+                                value=""
+                                oninput="censurar();"/>
+                                <input
+                                type="submit"
+                                id="omniwebtravelsubmit"
+                                title="submit"
+                                value="ir!"/>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="webtraveltabs">
+                            <div id="webtraveltab0" status="" title="tab0-" class="tab" onclick=""></div>
+                            <div id="webtraveltab1" status="" title="tab1-" class="tab" onclick=""></div>
+                            <div id="webtraveltab2" status="" title="tab2-" class="tab" onclick=""></div>
+                            <div id="webtraveltab3" status="" title="tab3-" class="tab" onclick=""></div>
+                            <div id="webtraveltab4" status="" title="tab4-" class="tab" onclick=""></div>
+                            <div id="webtraveltab5" status="" title="tab5-" class="tab" onclick=""></div>
+                            <div id="webtraveltab6" status="" title="tab6-" class="tab" onclick=""></div>
+                            <div id="webtraveltab7" status="" title="tab7-" class="tab" onclick=""></div>
+                            <div id="webtraveltab8" status="" title="tab8-" class="tab" onclick=""></div>
+                            <div id="webtraveltab9" status="" title="tab9-" class="tab" onclick=""></div>
+                            <select id="">
+                                <option enginer="https://www.google.com/search?q=" value="">Google</option>
+                                <option enginer="https://www.bing.com/search?q=" value="">Bing</option>
+                                <option enginer="https://duckduckgo.com/?t=h_&q=" value="">DuckDuckGo</option>
+                                <option enginer="https://yandex.com/search?text=" value="">Yandex</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <iframe src="" name="webtravelcontent" id="webtravelcontent"></iframe>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="calendar" onload="calendar()">
+            <table>
+                <tbody>
+                    <tr>
+                        <td colspan="7" id="show_year"></td>
+                    </tr>
+                    <tr>
+                        <td id="calendarDay0">dom</td>
+                        <td id="calendarDay1">seg</td>
+                        <td id="calendarDay2">ter</td>
+                        <td id="calendarDay3">qua</td>
+                        <td id="calendarDay4">qui</td>
+                        <td id="calendarDay5">sex</td>
+                        <td id="calendarDay6">sab</td>
+                    </tr>
+                    <tr>
+                        <td id="dayofmounth0"></td>
+                        <td id="dayofmounth1"></td>
+                        <td id="dayofmounth2"></td>
+                        <td id="dayofmounth3"></td>
+                        <td id="dayofmounth4"></td>
+                        <td id="dayofmounth5"></td>
+                        <td id="dayofmounth6"></td>
+                    </tr>
+                    <tr>
+                        <td id="dayofmounth7"></td>
+                        <td id="dayofmounth8"></td>
+                        <td id="dayofmounth9"></td>
+                        <td id="dayofmounth10"></td>
+                        <td id="dayofmounth11"></td>
+                        <td id="dayofmounth12"></td>
+                        <td id="dayofmounth13"></td>
+                    </tr>
+                    <tr>
+                        <td id="dayofmounth14"></td>
+                        <td id="dayofmounth15"></td>
+                        <td id="dayofmounth16"></td>
+                        <td id="dayofmounth17"></td>
+                        <td id="dayofmounth18"></td>
+                        <td id="dayofmounth19"></td>
+                        <td id="dayofmounth20"></td>
+                    </tr>
+                    <tr>
+                        <td id="dayofmounth21"></td>
+                        <td id="dayofmounth22"></td>
+                        <td id="dayofmounth23"></td>
+                        <td id="dayofmounth24"></td>
+                        <td id="dayofmounth25"></td>
+                        <td id="dayofmounth26"></td>
+                        <td id="dayofmounth27"></td>
+                    </tr>
+                    <tr>
+                        <td id="dayofmounth28"></td>
+                        <td id="dayofmounth29"></td>
+                        <td id="dayofmounth30"></td>
+                        <td id="dayofmounth31"></td>
+                        <td id="dayofmounth32"></td>
+                        <td id="dayofmounth33"></td>
+                        <td id="dayofmounth34"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="statusConnection"></div>
+    </section>
+</body>
+<script>
+    document.getElementById('mainSave').click();
+</script>
+</html>
