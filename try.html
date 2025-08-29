@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA de Aprendizado por Reforço</title>
+</head>
+<body>
+    <h2>IA de Aprendizado por Reforço</h2>
+    <p>Esta IA analisa seus movimentos de mouse e padrões de digitação.</p>
+    <p>Responda "Sim" ou "Não" para avaliar a precisão da análise.</p>
+    
+    <!-- Formulário de Feedback -->
+    <form id="feedbackForm">
+        <button type="button" onclick="reforcarAprendizado(true)">Sim</button>
+        <button type="button" onclick="reforcarAprendizado(false)">Não</button>
+    </form>
+
+    <p id="status">Aguardando interações...</p>
+
+    <script>
+        // Variáveis de estado da IA
+        let confianca = 0.5;           // Confiança inicial da IA (50%)
+        let interacoes = 0;            // Contador de interações
+        const taxaAprendizado = 0.1;   // Taxa de aprendizado
+
+        // Função para analisar movimentos do mouse
+        function analisarMovimentoMouse(evento) {
+            const velocidadeMouse = Math.sqrt(evento.movementX ** 2 + evento.movementY ** 2);
+            console.log(`Velocidade do mouse: ${velocidadeMouse}`);
+            ajustarConfianca(velocidadeMouse > 50); // Condição simplificada
+        }
+
+        // Função para analisar padrão de digitação
+        function analisarPadraoDigitacao(evento) {
+            const tecla = evento.key;
+            const tempo = evento.timeStamp;
+            const digitacaoRapida = tempo < 300;
+            console.log(`Tecla pressionada: ${tecla}, Digitação rápida: ${digitacaoRapida}`);
+            ajustarConfianca(digitacaoRapida);
+        }
+
+        // Função de ajuste da confiança baseado na condição
+        function ajustarConfianca(condicao) {
+            if (condicao) {
+                confianca += taxaAprendizado * (1 - confianca);
+            } else {
+                confianca -= taxaAprendizado * confianca;
+            }
+            atualizarStatus();
+        }
+
+        // Função para reforçar aprendizado com base no feedback
+        function reforcarAprendizado(correto) {
+            if (correto) {
+                confianca += taxaAprendizado * (1 - confianca);
+            } else {
+                confianca -= taxaAprendizado * confianca;
+            }
+            atualizarStatus();
+        }
+
+        // Função para atualizar o status exibido na página
+        function atualizarStatus() {
+            interacoes++;
+            document.getElementById("status").innerText = 
+                `Interações: ${interacoes}, Confiança atual: ${(confianca * 100).toFixed(2)}%`;
+        }
+
+        // Adiciona ouvintes de eventos para movimento do mouse e digitação
+        document.addEventListener('mousemove', analisarMovimentoMouse);
+        document.addEventListener('keypress', analisarPadraoDigitacao);
+    </script>
+</body>
+</html>
