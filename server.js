@@ -4,7 +4,7 @@ const http = require('http');
 const https = require('https');
 const socketIO = require('socket.io');
 const mysql = require('mysql2');
-const imap = require('C:/Users/PMI/AppData/Local/Microsoft/TypeScript/5.7/node_modules/@types/imap-simple/index.d.ts');
+const imap = (require('C:/Users/PMI/AppData/Local/Microsoft/TypeScript/5.7/node_modules/@types/imap-simple/index.d.ts'))?require('C:/Users/PMI/AppData/Local/Microsoft/TypeScript/5.7/node_modules/@types/imap-simple/index.d.ts'): null;// till add other module equals to imap module.
 const cors = require('cors');
 const ssh2 = require('C:/Users/PMI/AppData/Local/Microsoft/TypeScript/5.7/node_modules/@types/ssh2/index.d.ts');
 const crypto = require('crypto');
@@ -33,7 +33,7 @@ db.connect((err) => {
 // Configuração do IMAP para recebimento de emails
 const imapConfig = {
   imap: {
-    user: 'seu_email@gmail.com',
+    user: 'sabrinahtml2@gmail.com',
     password: 'sua_senha',
     host: 'imap.gmail.com',
     port: 993,
