@@ -1,4 +1,4 @@
-const Sayure = require('../Sayure');
+const { sayure, Sayure } = require('../Sayure');
 const fs = require('fs');
 const http = require('http');
 const jwt = require('jsonwebtoken');
@@ -56,7 +56,7 @@ class SayureWhatICanDo {
       const payload = { username, iat, exp };
       const token = jwt.sign(payload, secretKey);
 
-      Sayure.envBus.emit('diagnostic', {
+      sayure.envBus.emit('diagnostic', {
         type: 'jwt_generated',
         username,
         timestamp: new Date().toISOString()
